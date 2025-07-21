@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   weather-app:
-    image: bibek87/dynamic_weather_app:PLACEHOLDER_TAG # This tag will be updated by Jenkins
+    image: bibek87/dynamic_weather_app:v-1.0.0.65 # This tag will be updated by Jenkins
     container_name: dynamicweatherapp_cd_cont # A distinct name for the CD deployment
     ports:
       - "5000:5000" # Map container port 5000 to host port 5000
