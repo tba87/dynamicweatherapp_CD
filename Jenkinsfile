@@ -48,7 +48,7 @@ pipeline {
                     if (changes) {
                         echo "Committing updated docker-compose.yml with new image tag..."
                         sh "git commit -m 'Deploy: Update image tag to ${params.IMAGE_NAME_WITH_TAG}'"
-                        withCredentials([usernamePassword(credentialsId: 'Github_token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: 'GitUnPw', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                             sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/tba87/dynamicweatherapp_CD.git HEAD" // Or use SSH URL if configured
                         }
                         echo "Changes pushed to GitHub."
