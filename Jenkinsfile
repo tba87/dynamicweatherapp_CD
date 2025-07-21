@@ -33,6 +33,32 @@ pipeline {
             }
         }
 
+        stage('Commit and Push Deployment Config') {
+            steps {
+                script {
+                    // Configure Git user (important for commits)
+                    sh 'git config user.email "jenkins@example.com"' // Use a dedicated Jenkins email
+                    sh 'git config user.name "Jenkins Automation"' // Use a dedicated Jenkins name
+
+                    // Add the modified file
+                    sh 'git add docker-compose.yml' // Or git add . if you modified multiple files
+
+                    // Check if there are actual changes before committing
+                    def changes = sh(script: 'git status --porcelain', returnStdout: true).trim()
+                    if (changes) {
+                        echo "Committing updated docker-compose.yml with new image tag..."
+                        sh "git commit -m 'Deploy: Update image tag to ${params.IMAGE_NAME_WITH_TAG}'"
+                        withCredentials([usernamePassword(credentialsId: 'Github_token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@ghttps://github.com/tba87/dynamicweatherapp_CD.git HEAD" // Or use SSH URL if configured
+                        }
+                        echo "Changes pushed to GitHub."
+                    } else {
+                        echo "No changes detected in docker-compose.yml to commit."
+                    }
+                }
+            }
+        }
+
         stage('Deploy Application') {
             steps {
                 echo "---Deploying application using Docker Compose---"
