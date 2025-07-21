@@ -37,8 +37,8 @@ pipeline {
             steps {
                 script {
                     // Configure Git user (important for commits)
-                    sh 'git config user.email "jenkins@example.com"' // Use a dedicated Jenkins email
-                    sh 'git config user.name "Jenkins Automation"' // Use a dedicated Jenkins name
+                    sh 'git config user.email "bibek.tamrakar+pipeline@msn.com"' // Use a dedicated Jenkins email
+                    sh 'git config user.name "tba87_jenkins"' // Use a dedicated Jenkins name
 
                     // Add the modified file
                     sh 'git add docker-compose.yml' // Or git add . if you modified multiple files
