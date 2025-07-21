@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  weather-app:
+    image: bibek87/dynamic_weather_app:PLACEHOLDER_TAG # This tag will be updated by Jenkins
+    container_name: dynamicweatherapp_cd_cont # A distinct name for the CD deployment
+    ports:
+      - "5000:5000" # Map container port 5000 to host port 5000
+    environment:
+      # It's better to pass sensitive keys as secrets or through Jenkins credentials.
+      # For now, we'll assume OPENWEATHER_API_KEY is an environment variable in Jenkins.
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+    restart: unless-stopped # Always restart if the container stops, unless explicitly stopped
+    healthcheck: # Matches the Dockerfile's healthcheck for consistency
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
